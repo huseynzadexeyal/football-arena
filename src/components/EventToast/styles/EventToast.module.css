@@ -1,0 +1,48 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  top: clamp(44px, 12vh, 110px);
+  z-index: 43;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px 8px 12px;
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(5, 10, 30, 0.92);
+  border: 2px solid var(--c, #fff);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--c, #fff) 55%, transparent), 0 8px 24px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  animation: toast 2.1s cubic-bezier(0.2, 0.9, 0.25, 1.2) both;
+}
+.yellow { --c: #ffd24d; }
+.red { --c: #ff3b3b; }
+.post { --c: #9ad1ff; }
+
+.card {
+  width: 22px;
+  height: 31px;
+  border-radius: 3px;
+  background: var(--c);
+  box-shadow: 0 0 10px var(--c);
+  transform: rotate(-8deg);
+  animation: cardShow 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.5) 0.1s both;
+}
+.post { font-size: 1.9rem; line-height: 1; }
+span.post { color: inherit; }
+
+.text { display: grid; gap: 1px; line-height: 1.15; }
+.text b { font: 800 1.15rem / 1 "Barlow Condensed", "Arial Narrow", Impact, sans-serif; letter-spacing: 0.1em; color: var(--c); }
+.text span { font: 600 0.8rem system-ui, sans-serif; color: #e9f0ff; }
+
+@keyframes toast {
+  0%   { opacity: 0; transform: translate(-50%, -30px) scale(0.8); }
+  12%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  82%  { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -14px) scale(0.95); }
+}
+@keyframes cardShow {
+  from { transform: translateY(-14px) rotate(-40deg) scale(0.3); opacity: 0; }
+  to { transform: rotate(-8deg); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .toast, .card { animation: none; transform: translateX(-50%); } .card { transform: rotate(-8deg); } }

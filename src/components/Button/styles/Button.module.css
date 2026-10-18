@@ -1,0 +1,35 @@
+.btn {
+  padding: 8px 14px;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  font: 700 0.8rem "Times New Roman", serif;
+  cursor: pointer;
+}
+.btn:focus-visible { outline: 3px solid #ffb703; outline-offset: 2px; }
+
+.danger { background: var(--red); }
+
+.success {
+  padding: clamp(4px, 1vh, 9px) 20px;
+  background: var(--red);
+  border-radius: 0 0 8px 8px;
+  font-size: 0.95rem;
+}
+
+.gold {
+  color: #1b1400;
+  background: linear-gradient(180deg, #ffd24d, #f0a30a);
+  box-shadow: 0 0 0 0 rgba(255, 210, 77, 0.7);
+  animation: goldPulse 1.8s ease-out infinite;
+}
+@keyframes goldPulse { to { box-shadow: 0 0 0 10px rgba(255, 210, 77, 0); } }
+@media (prefers-reduced-motion: reduce) { .gold { animation: none; } }
+.gold:disabled { animation: none; }
+
+.sm {
+  padding: clamp(3px, 0.8vh, 7px) clamp(5px, 1vw, 12px);
+  font-size: clamp(0.58rem, 1.5vh, 0.78rem);
+}
+
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }

@@ -1,0 +1,7 @@
+.photo {
+  display: block;
+  object-fit: cover;
+  object-position: 50% 20%; /* üz görünsün */
+  border-radius: 50%;
+  border: 3px solid #444;
+}

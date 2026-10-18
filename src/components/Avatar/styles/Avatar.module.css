@@ -1,0 +1,15 @@
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid #444;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 1px;
+  user-select: none;
+}
+.GK { background: #d98e04; }
+.DEF { background: #1e6fd9; }
+.MID { background: #2a9d4a; }
+.FWD { background: #d62839; }

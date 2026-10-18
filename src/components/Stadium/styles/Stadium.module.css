@@ -1,0 +1,112 @@
+.stadium {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(#02050d 0%, #08132b 30%, #0c1d3d 54%);
+}
+
+/* projektor işıqları: 4 ədəd — yuxarıda 2, aşağıda 2 (hər küncdə bir) */
+.lights {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 7% 4%, rgba(255, 248, 200, 0.8) 0, rgba(255, 248, 200, 0.25) 6%, transparent 24%),
+    radial-gradient(circle at 93% 4%, rgba(255, 248, 200, 0.8) 0, rgba(255, 248, 200, 0.25) 6%, transparent 24%),
+    radial-gradient(circle at 7% 96%, rgba(255, 248, 200, 0.8) 0, rgba(255, 248, 200, 0.25) 6%, transparent 24%),
+    radial-gradient(circle at 93% 96%, rgba(255, 248, 200, 0.8) 0, rgba(255, 248, 200, 0.25) 6%, transparent 24%);
+  transition: filter 0.4s ease;
+  animation: glow 6s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
+/* start sayımı: işıqlar tam parlaq yanır */
+.boost .lights {
+  animation: none;
+  opacity: 1;
+  filter: brightness(1.8) saturate(1.2);
+}
+
+/* tribunalar — yuxarıdan meydançaya qədər */
+.stands {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 54%;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0 3px, transparent 3px 28px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.55) 1px, transparent 1.7px) 0 0 / 10px 13px,
+    radial-gradient(circle, rgba(255, 90, 70, 0.5) 1px, transparent 1.7px) 5px 6px / 10px 13px,
+    radial-gradient(circle, rgba(80, 160, 255, 0.45) 1px, transparent 1.7px) 3px 3px / 14px 13px,
+    linear-gradient(#10224a, #0b1a38);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22%);
+}
+
+/* reklam lövhələri */
+/* .boards {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 52%;
+  height: 3.4%;
+  background: repeating-linear-gradient(90deg, #d62828 0 90px, #f5f5f5 90px 180px, #1e6fd9 180px 270px);
+  box-shadow: 0 -6px 14px rgba(0, 0, 0, 0.55);
+} */
+
+/* meydança — aşağı hissənin hamısı */
+.pitch {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.1%;
+  bottom: 0;
+  background: repeating-linear-gradient(90deg, #14853a 0 90px, #0f6a2d 90px 180px);
+}
+.half {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(30vw, 260px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+}
+.box {
+  position: absolute;
+  top: 50%;
+  width: 12%;
+  height: 62%;
+  transform: translateY(-50%);
+  border: 3px solid rgba(255, 255, 255, 0.7);
+}
+.boxLeft { left: 0; border-left: 0; }
+.boxRight { right: 0; border-right: 0; }
+
+/* kənarları qaralt — stadion dərinliyi */
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 60%, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lights { animation: none; }
+}

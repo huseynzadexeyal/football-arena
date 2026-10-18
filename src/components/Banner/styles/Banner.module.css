@@ -1,0 +1,30 @@
+.banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 45;
+  display: grid;
+  justify-items: center;
+  gap: 0.6vmin;
+  padding: 2.5vmin 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(5, 10, 30, 0.92) 14%, rgba(5, 10, 30, 0.92) 86%, transparent);
+  border-block: 2px solid #ffd24d;
+  animation: bannerIn var(--dur, 2000ms) ease both;
+}
+.title {
+  font: 900 clamp(2.2rem, 13vmin, 6.5rem) / 1 "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 210, 77, 0.8);
+}
+.sub { font: 700 clamp(1rem, 4vmin, 1.8rem) "Courier New", monospace; color: #ffd24d; letter-spacing: 0.1em; }
+
+@keyframes bannerIn {
+  0%   { opacity: 0; transform: translateY(-50%) scaleY(0.1); }
+  10%  { opacity: 1; transform: translateY(-50%) scaleY(1); }
+  85%  { opacity: 1; transform: translateY(-50%) scaleY(1); }
+  100% { opacity: 0; transform: translateY(-50%) scaleY(0.6); }
+}
+@media (prefers-reduced-motion: reduce) { .banner { animation: none; transform: translateY(-50%); } }

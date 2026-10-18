@@ -1,0 +1,55 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 44;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+.flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--tc) 55%, transparent) 0, transparent 65%);
+  animation: flash 1.6s ease-out both;
+}
+.ball {
+  position: absolute;
+  font-size: 14vmin;
+  animation: ballIn 1.5s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+.text { position: relative; display: grid; justify-items: center; gap: 1.2vmin; }
+.goal {
+  display: flex;
+  font: 900 italic clamp(4rem, 24vmin, 13rem) / 1 "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  color: #fff;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 20px var(--tc), 0 0 60px var(--tc), 0 6px 0 rgba(0, 0, 0, 0.35);
+  animation: textOut 1.7s ease both;
+}
+.goal span { display: inline-block; animation: letter 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.4) calc(var(--i) * 70ms) both; }
+.who {
+  padding: 0.5vmin 3vmin;
+  border-radius: 999px;
+  background: rgba(5, 10, 30, 0.85);
+  border: 2px solid var(--tc);
+  color: #fff;
+  font: 700 clamp(0.9rem, 3.4vmin, 1.5rem) system-ui, sans-serif;
+  animation: whoIn 1.7s ease both;
+}
+.who b { color: #ffd24d; }
+.who i { color: var(--tc); font-style: normal; }
+
+@keyframes flash { 0% { opacity: 0; } 12% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes ballIn {
+  0%   { transform: translate(-40vw, 30vh) scale(0.4) rotate(0); opacity: 0; }
+  30%  { transform: translate(0, 0) scale(1.5) rotate(540deg); opacity: 1; }
+  100% { transform: translate(0, -2vh) scale(2.4) rotate(900deg); opacity: 0; }
+}
+@keyframes letter { from { transform: translateY(40%) scale(0.2); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes textOut { 0%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-6vh) scale(1.08); } }
+@keyframes whoIn { 0%, 70% { opacity: 1; } 100% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ball, .goal span { animation: none; }
+}

@@ -1,0 +1,277 @@
+/* FIFA "Team of the Year" üslubunda oyunçu kartı.
+   Bütün ölçülər kartın eninə görə (cqw) hesablanır — kart nə qədər kiçilsə, məzmun da eyni nisbətdə kiçilir.
+   Koordinatlar 700×1000 etalon kartdan götürülüb. */
+
+.card {
+  --card-bg-1: #12307a;
+  --card-bg-2: #050f2c;
+  --card-wave: #2f7bff;
+  --card-streak: #52e0ff;
+  --card-glow: #ffe08a;
+  --card-frame-1: #f6e7a6;
+  --card-frame-2: #b8963f;
+  --card-frame-3: #7a5f22;
+  --card-gap: #0a1536;
+  --card-trim: #d8bd6c;
+  --card-line: #2ab4e8;
+  --card-text: #f1dd9a;
+  --card-badge-bg: rgba(5, 15, 44, 0.85);
+  --card-badge-text: #f1dd9a;
+
+  position: relative;
+  /* hüceyrəyə sığan ən böyük 7:10 kart */
+  width: min(100cqw, 70cqh);
+  aspect-ratio: 7 / 10;
+  container-type: inline-size;
+  color: var(--card-text);
+  font-family: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", "Segoe UI", sans-serif;
+  filter: drop-shadow(0 0.8cqw 1.2cqw rgba(0, 0, 0, 0.55));
+  transition: transform 0.18s ease, filter 0.18s ease;
+  user-select: none;
+}
+
+/* Ən yaxşı oyunçu: qızıl kart */
+.mvp {
+  --card-bg-1: #f7e4a0;
+  --card-bg-2: #c89a3c;
+  --card-wave: #ffffff;
+  --card-streak: #fff7d1;
+  --card-glow: #ffffff;
+  --card-frame-1: #fff3bd;
+  --card-frame-2: #d9ab3f;
+  --card-frame-3: #8a6516;
+  --card-gap: #7d5c14;
+  --card-trim: #fff0b0;
+  --card-line: #6f4f10;
+  --card-text: #3b2905;
+  --card-badge-bg: #3b2905;
+  --card-badge-text: #ffe28a;
+}
+
+/* Kart paketi nəşrləri ("special" standart mavi TOTY kartıdır; "gold" MVP rəngidir) */
+.tier_gold {
+  --card-bg-1: #f7e4a0;
+  --card-bg-2: #c89a3c;
+  --card-wave: #ffffff;
+  --card-streak: #fff7d1;
+  --card-glow: #ffffff;
+  --card-frame-1: #fff3bd;
+  --card-frame-2: #d9ab3f;
+  --card-frame-3: #8a6516;
+  --card-gap: #7d5c14;
+  --card-trim: #fff0b0;
+  --card-line: #6f4f10;
+  --card-text: #3b2905;
+  --card-badge-bg: #3b2905;
+  --card-badge-text: #ffe28a;
+}
+.tier_silver {
+  --card-bg-1: #c4cfe0;
+  --card-bg-2: #66748b;
+  --card-wave: #ffffff;
+  --card-streak: #eef4ff;
+  --card-glow: #ffffff;
+  --card-frame-1: #f4f7ff;
+  --card-frame-2: #a9b4c8;
+  --card-frame-3: #5b677c;
+  --card-gap: #3a4254;
+  --card-trim: #dfe6f5;
+  --card-line: #3e4a60;
+  --card-text: #1f2735;
+  --card-badge-bg: #1f2735;
+  --card-badge-text: #e8eefb;
+}
+.tier_bronze {
+  --card-bg-1: #b9825a;
+  --card-bg-2: #5a3418;
+  --card-wave: #e8b184;
+  --card-streak: #f5cfa8;
+  --card-glow: #ffd9b3;
+  --card-frame-1: #f0c79d;
+  --card-frame-2: #b57a45;
+  --card-frame-3: #6e4120;
+  --card-gap: #2b190a;
+  --card-trim: #d9a273;
+  --card-line: #e8b184;
+  --card-text: #fbe6d0;
+  --card-badge-bg: rgba(43, 25, 10, 0.88);
+  --card-badge-text: #fbe6d0;
+}
+
+/* matçda aldığı kartın nişanı (sağ üst) */
+.cardMark {
+  position: absolute;
+  right: 11%;
+  top: 25%;
+  width: 4.4cqw;
+  height: 6.2cqw;
+  border-radius: 0.6cqw;
+  box-shadow: 0 0 1.4cqw rgba(0, 0, 0, 0.5);
+  transform: rotate(8deg);
+}
+.yellowMark { background: #ffd24d; }
+.redMark { background: #ff3b3b; }
+.sentOff { filter: grayscale(0.7) brightness(0.75) drop-shadow(0 0.8cqw 1.2cqw rgba(0, 0, 0, 0.55)); }
+
+.interactive { cursor: pointer; }
+.interactive:hover { transform: translateY(-2%) scale(1.03); }
+.interactive:focus-visible {
+  outline: none;
+  filter: drop-shadow(0 0 1.4cqw #ffb703) drop-shadow(0 0.8cqw 1.2cqw rgba(0, 0, 0, 0.55));
+}
+
+.art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- sol sütun: rating, mövqe, bayraq, forma nömrəsi ---- */
+
+.rating,
+.role {
+  position: absolute;
+  left: 10%;
+  width: 33%;
+  text-align: center;
+  line-height: 1;
+}
+.rating { top: 11.2%; font-size: 17.5cqw; font-weight: 700; letter-spacing: -0.02em; }
+.role { top: 23.4%; font-size: 8.6cqw; font-weight: 600; letter-spacing: 0.03em; }
+
+.flag {
+  position: absolute;
+  left: 17.4%;
+  top: 32.2%;
+  width: 18cqw;
+  height: 9cqw;
+}
+
+.shirt {
+  position: absolute;
+  left: calc(26.4% - 4.6cqw);
+  top: 41.6%;
+  display: grid;
+  place-items: center;
+  width: 9.2cqw;
+  height: 9.2cqw;
+  border-radius: 50%;
+  border: 0.6cqw solid rgba(255, 255, 255, 0.85);
+  font-size: 4.8cqw;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 0.6cqw rgba(0, 0, 0, 0.6);
+}
+
+/* ---- oyunçu şəkli ---- */
+
+.photo {
+  position: absolute;
+  left: 32%;
+  right: 9%;
+  top: 13%;
+  height: 41%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* hündür kəsimlər (Messi, De Bruyne, Vinícius): üz yuxarıda, aşağı hissə yumşaq itir */
+.cover img {
+  object-fit: cover;
+  object-position: 50% 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+/* illüstrasiya / baş şəkilləri: tam görünür, pəncərənin dibinə oturur */
+.contain img {
+  object-fit: contain;
+  object-position: 50% 100%;
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.portrait > * { width: 88%; height: auto; aspect-ratio: 1; }
+
+/* ---- nişanlar ---- */
+
+.badge {
+  position: absolute;
+  left: 33.5%;
+  padding: 0.5cqw 2.2cqw;
+  border-radius: 999px;
+  background: var(--card-badge-bg);
+  color: var(--card-badge-text);
+  font-size: 4.4cqw;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.mvpBadge { left: auto; right: 11%; top: 13.8%; }
+.goalBadge { top: 47.6%; }
+
+/* ---- ad və göstəricilər ---- */
+
+.name {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 55.6%;
+  margin: 0;
+  text-align: center;
+  font-size: 7.7cqw;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.stats {
+  position: absolute;
+  left: 19.5%;
+  width: 64%;
+  top: 65.3%;
+  height: 20.1%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 56% 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  grid-auto-flow: column;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 2.4cqw;
+  font-size: 7.7cqw;
+  line-height: 1;
+}
+.stat b { min-width: 2ch; font-weight: 700; }
+.stat span { font-weight: 500; letter-spacing: 0.02em; }
+
+/* Qol vuran oyunçunun kartı: hoppanır, silkələnir, qızılı parıldayır */
+.scored { z-index: 5; animation: goalCelebrate 1.1s cubic-bezier(0.3, 0.7, 0.4, 1) both; }
+@keyframes goalCelebrate {
+  0%   { transform: none; }
+  15%  { transform: translateY(-9%) scale(1.12) rotate(-4deg); filter: drop-shadow(0 0 3cqw #ffd24d) drop-shadow(0 0.8cqw 1.2cqw rgba(0, 0, 0, 0.55)); }
+  30%  { transform: translateY(0) scale(1.1) rotate(4deg); }
+  45%  { transform: translateY(-5%) scale(1.1) rotate(-3deg); filter: drop-shadow(0 0 3cqw #ffd24d) drop-shadow(0 0.8cqw 1.2cqw rgba(0, 0, 0, 0.55)); }
+  60%  { transform: scale(1.08) rotate(2deg); }
+  80%  { transform: scale(1.04) rotate(-1deg); }
+  100% { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .scored { animation: none; } }

@@ -1,0 +1,178 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: radial-gradient(circle at 50% 30%, rgba(8, 14, 36, 0.72), rgba(2, 4, 12, 0.92));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.22s ease both;
+}
+.sheet {
+  --t1: #4aa3ff;
+  --t2: #ff9f43;
+  position: relative;
+  width: min(100%, 460px);
+  max-height: 96dvh;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+  padding: 16px 16px 14px;
+  color: #eaf0ff;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(160deg, #0f1d44, #070d22);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 0 60px rgba(74, 163, 255, 0.25), 0 24px 60px rgba(0, 0, 0, 0.6);
+  scrollbar-width: thin;
+  animation: sheetIn 0.45s cubic-bezier(0.2, 0.9, 0.25, 1.12) both;
+}
+.x {
+  position: absolute;
+  top: 10px;
+  left: 10px; /* sağ tərəfdə səs düyməsi dayanır */
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.x:hover { background: rgba(255, 90, 90, 0.7); transform: rotate(90deg); }
+.x:focus-visible, .closeBtn:focus-visible { outline: 3px solid #ffb703; outline-offset: 2px; }
+
+/* ---------- başlıq ---------- */
+.head { display: grid; justify-items: center; gap: 4px; padding: 0 28px; }
+.status {
+  padding: 1px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  font: 700 0.7rem system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #cfdcff;
+}
+.live { background: #ff3b3b; color: #fff; animation: pulse 1.4s ease-in-out infinite; }
+.scoreRow { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; width: 100%; }
+.team { font: 700 1.05rem system-ui, sans-serif; }
+.t1 { text-align: right; color: var(--t1); }
+.t2 { text-align: left; color: var(--t2); }
+.score {
+  font: 700 2.2rem "Courier New", monospace;
+  color: #ffb703;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(255, 183, 3, 0.55);
+}
+
+/* ---------- zaman xətti ---------- */
+.timeline { position: relative; height: 62px; margin: 0 8px; }
+.track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 29px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #4cffa0, #ffd24d);
+  transition: width 0.4s ease;
+}
+.half { position: absolute; left: 50%; top: -3px; width: 2px; height: 11px; background: rgba(255, 255, 255, 0.5); }
+.mark {
+  position: absolute;
+  translate: -50% 0;
+  font-size: 0.85rem;
+  line-height: 1;
+  animation: markIn 0.4s cubic-bezier(0.2, 0.9, 0.25, 1.5) both;
+}
+.goalMark { font-size: 1.05rem; z-index: 1; }
+.up { top: 7px; filter: drop-shadow(0 0 3px var(--t1)); }
+.down { top: 39px; filter: drop-shadow(0 0 3px var(--t2)); }
+.tick0, .tick45, .tick90 { position: absolute; bottom: -4px; font: 600 0.62rem system-ui, sans-serif; color: #8fa3c7; }
+.tick0 { left: -4px; }
+.tick45 { left: 50%; translate: -50% 0; }
+.tick90 { right: -6px; }
+
+/* ---------- statistika sətirləri ---------- */
+.rows { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+.row {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: baseline;
+  gap: 2px 6px;
+}
+.vA, .vB { font: 700 1rem "Courier New", monospace; color: #cfdcff; }
+.vA { text-align: left; }
+.vB { text-align: right; }
+.label { text-align: center; font: 600 0.78rem system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: #aab9dc; }
+.leadA .vA { color: var(--t1); }
+.leadB .vB { color: var(--t2); }
+.bar { grid-column: 1 / -1; display: flex; gap: 3px; height: 6px; }
+.barA, .barB { height: 100%; transition: width 0.6s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.barA { border-radius: 3px 0 0 3px; background: var(--t1); opacity: 0.85; }
+.barB { border-radius: 0 3px 3px 0; background: var(--t2); opacity: 0.85; margin-left: auto; }
+.leadA .barA, .leadB .barB { opacity: 1; box-shadow: 0 0 8px currentColor; }
+.leadA .barA { color: var(--t1); }
+.leadB .barB { color: var(--t2); }
+
+/* ---------- əsas oyunçular ---------- */
+.sub { margin: 4px 0 0; font: 700 1.1rem "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: #ffd24d; }
+.players { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-left: 4px solid;
+  font-size: 0.85rem;
+  animation: rowIn 0.35s ease both;
+}
+.p1 { border-left-color: var(--t1); }
+.p2 { border-left-color: var(--t2); }
+.pname { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chips { display: flex; gap: 8px; flex: none; }
+.chips i { font-style: normal; font-weight: 700; white-space: nowrap; }
+.dim { opacity: 0.6; font-weight: 500 !important; }
+.empty { margin: 0; color: #8fa3c7; font-style: italic; font-size: 0.85rem; }
+
+.closeBtn {
+  justify-self: center;
+  margin-top: 4px;
+  padding: 7px 26px;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  background: var(--red);
+  font: 700 0.85rem "Times New Roman", serif;
+  cursor: pointer;
+}
+
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes sheetIn { from { opacity: 0; transform: translateY(24px) scale(0.94); } }
+@keyframes rowIn { from { opacity: 0; transform: translateX(-8px); } }
+@keyframes markIn { from { opacity: 0; transform: scale(0.2); } }
+@keyframes pulse { 50% { opacity: 0.65; } }
+
+@media (max-height: 540px) {
+  .sheet { gap: 6px; padding: 10px 14px; }
+  .timeline { height: 52px; }
+  .rows { gap: 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .overlay, .sheet, .player, .mark, .live { animation: none; }
+  .barA, .barB, .progress { transition: none; }
+}

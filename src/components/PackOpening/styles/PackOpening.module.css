@@ -1,0 +1,303 @@
+.overlay {
+  --ch: min(44dvh, 320px);
+  --cw: min(29vw, 230px, calc(var(--ch) * 0.7));
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 12px;
+  color: #eaf0ff;
+  font-family: system-ui, sans-serif;
+  background: radial-gradient(circle at 50% 40%, rgba(20, 36, 92, 0.85), rgba(2, 4, 14, 0.96) 70%);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease both;
+}
+.x {
+  position: absolute;
+  top: 54px; /* səs düyməsinin altında */
+  right: 8px;
+  z-index: 5;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.x:hover { background: rgba(255, 90, 90, 0.7); transform: rotate(90deg); }
+.x:focus-visible, .pack:focus-visible, .slot:focus-visible, .btn:focus-visible { outline: 3px solid #ffb703; outline-offset: 3px; }
+
+.heading {
+  margin: 0;
+  text-align: center;
+  font: 800 clamp(1.4rem, 5dvh, 2.6rem) / 1 "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 0 22px rgba(255, 210, 77, 0.7);
+}
+
+/* =========================  BAĞLI PAKET  ========================= */
+.stagePack { position: relative; display: grid; justify-items: center; gap: clamp(10px, 3dvh, 26px); }
+.hint { margin: 0; color: #aab9dc; font-size: 0.95rem; letter-spacing: 0.06em; animation: blink 1.6s ease-in-out infinite; }
+
+.packWrap {
+  --pw: min(46vw, 240px, 34dvh);
+  position: relative;
+  width: var(--pw);
+  aspect-ratio: 5 / 8;
+  animation: packIn 0.7s cubic-bezier(0.2, 0.9, 0.25, 1.2) both;
+}
+.glow {
+  position: absolute;
+  inset: -22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74, 163, 255, 0.55), transparent 65%);
+  animation: glowPulse 2.4s ease-in-out infinite;
+}
+.pack {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.65));
+  transition: transform 0.2s ease;
+  animation: float 3.2s ease-in-out 0.8s infinite alternate;
+}
+.pack:hover:not(:disabled) { transform: scale(1.04) rotate(-1deg); }
+.pack:disabled { cursor: default; }
+
+/* folqa üzərindəki qıvrım zolaqları (üst hissə cırılır) */
+.top, .bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8%;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0 2px, rgba(0, 0, 0, 0.3) 2px 5px),
+    linear-gradient(180deg, #e9d68d, #a98a3a);
+}
+.top { top: 0; border-radius: 6px 6px 0 0; transform-origin: 0 100%; z-index: 2; }
+.bottom { bottom: 0; border-radius: 0 0 6px 6px; }
+.body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 7%;
+  bottom: 7%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 4%;
+  border-inline: 2px solid #d8bd6c;
+  background:
+    radial-gradient(circle at 30% 18%, rgba(120, 190, 255, 0.55), transparent 45%),
+    repeating-linear-gradient(115deg, transparent 0 14px, rgba(255, 255, 255, 0.05) 14px 16px),
+    linear-gradient(160deg, #2a63e8, #12307a 45%, #050f2c);
+}
+.crest {
+  display: grid;
+  place-items: center;
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  font-size: calc(var(--pw) * 0.2);
+  background: radial-gradient(circle, #fff7d1, #d9ab3f);
+  box-shadow: 0 0 20px rgba(255, 224, 138, 0.7);
+}
+.brand { font: 600 calc(var(--pw) * 0.075) "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: 0.3em; text-transform: uppercase; color: #cfdcff; }
+.kind { font: 800 calc(var(--pw) * 0.17) / 1 "Barlow Condensed", "Arial Narrow", Impact, sans-serif; letter-spacing: 0.06em; color: #f1dd9a; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5); }
+.count { padding: 1px 10px; border-radius: 999px; font: 700 calc(var(--pw) * 0.065) system-ui, sans-serif; letter-spacing: 0.15em; color: #050f2c; background: #f1dd9a; }
+.shine {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.55) 49%, rgba(180, 230, 255, 0.35) 52%, transparent 60%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  mix-blend-mode: soft-light;
+  animation: sweep 3.4s ease-in-out 1s infinite;
+}
+
+/* cırılma ardıcıllığı: gərilmə → silkələnmə → yuxarı hissə uçur → işıq partlayışı */
+.tearing .pack { animation: shake 0.75s linear forwards, packOut 0.5s ease 1.15s forwards; }
+.tearing .glow { animation: glowCharge 1s ease-in both; }
+.tearing .top { animation: tearOff 0.7s cubic-bezier(0.4, 0, 0.8, 0.6) 0.75s both; }
+.tearing .body { animation: bodyOpen 0.5s ease 0.8s both; }
+.burst {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 20%;
+  aspect-ratio: 1;
+  margin: -10%;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, #fff 0 25%, rgba(255, 240, 180, 0.95) 40%, rgba(255, 210, 77, 0.0) 70%);
+}
+.tearing .burst { animation: burst 0.75s ease-out 1s both; }
+
+/* =========================  KARTLAR  ========================= */
+.stageCards {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: clamp(8px, 2.4dvh, 22px);
+  width: 100%;
+  animation: fadeIn 0.4s ease both;
+}
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 150vmax;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.07) 0 6deg, transparent 6deg 18deg);
+  mask-image: radial-gradient(circle, #000 0, transparent 38%);
+  -webkit-mask-image: radial-gradient(circle, #000 0, transparent 38%);
+  animation: spin 40s linear infinite;
+}
+.rays_gold { background: repeating-conic-gradient(from 0deg, rgba(255, 214, 90, 0.2) 0 6deg, transparent 6deg 18deg); }
+.rays_special { background: repeating-conic-gradient(from 0deg, rgba(90, 190, 255, 0.28) 0 6deg, transparent 6deg 18deg); }
+
+.slots {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(6px, 2.4vw, 26px);
+}
+.slotItem {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  animation: slotIn 0.7s cubic-bezier(0.2, 0.9, 0.25, 1.15) calc(var(--i) * 140ms) both;
+}
+.slot {
+  position: relative;
+  width: var(--cw);
+  height: calc(var(--cw) / 0.7);
+  padding: 0;
+  border: 0;
+  background: none;
+  perspective: 900px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.slot:not(.flipped):hover { transform: translateY(-3%) scale(1.03); }
+.inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.3, 0.8, 0.3, 1.1);
+}
+.flipped .inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.front { transform: rotateY(180deg); }
+.cardBox { display: block; width: 100%; height: 100%; container-type: size; filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.55)); }
+
+/* kartın arxası: eyni dəstə dizaynı; nadirliyə görə kənar parıltısı gizli işarədir */
+.back {
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 2px solid #d8bd6c;
+  background:
+    radial-gradient(circle at 50% 50%, #2f7bff 0 22%, transparent 23%),
+    repeating-linear-gradient(115deg, transparent 0 14px, rgba(255, 255, 255, 0.05) 14px 16px),
+    linear-gradient(160deg, #12307a, #050f2c);
+  box-shadow: 0 0 18px var(--tc, rgba(74, 163, 255, 0.35)), 0 10px 22px rgba(0, 0, 0, 0.55);
+}
+.backCircle { position: absolute; width: 46%; aspect-ratio: 1; border-radius: 50%; border: 2px solid #d8bd6c; }
+.backText { position: relative; font: 800 calc(var(--cw) * 0.28) / 1 "Barlow Condensed", Impact, sans-serif; color: #f1dd9a; text-shadow: 0 0 14px rgba(255, 224, 138, 0.6); }
+
+.t_bronze { --tc: rgba(217, 162, 115, 0.45); --tcs: #e0a070; }
+.t_silver { --tc: rgba(200, 214, 240, 0.6); --tcs: #dfe6f5; }
+.t_gold { --tc: rgba(255, 210, 77, 0.9); --tcs: #ffd24d; }
+.t_special { --tc: rgba(74, 190, 255, 1); --tcs: #4abeff; }
+.t_gold:not(.flipped) .back, .t_special:not(.flipped) .back { animation: tease 1.2s ease-in-out infinite alternate; }
+
+/* çevriləndən sonra nadir kartın arxasında parıltı halqası */
+.aura {
+  position: absolute;
+  inset: -8%;
+  border-radius: 14px;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--tc), transparent 68%);
+  transition: opacity 0.5s ease 0.35s;
+}
+.flipped .aura { opacity: 1; animation: auraPulse 2s ease-in-out 1s infinite alternate; }
+
+.info { display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; opacity: 0; transform: translateY(-6px); transition: opacity 0.4s ease 0.5s, transform 0.4s ease 0.5s; }
+.infoOn { opacity: 1; transform: none; }
+.tierChip { padding: 1px 10px; border-radius: 999px; font: 700 0.7rem system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: #0a1020; background: var(--tcs); }
+.isNew { font: 800 0.85rem "Barlow Condensed", Impact, sans-serif; letter-spacing: 0.12em; color: #4cffa0; text-shadow: 0 0 10px rgba(76, 255, 160, 0.7); animation: pop 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.6) 0.6s both; }
+.dupe { font-size: 0.78rem; color: #8fa3c7; }
+
+.actions { position: relative; display: grid; justify-items: center; gap: 8px; min-height: 64px; }
+.summary { margin: 0; font-size: 0.95rem; color: #cfdcff; }
+.btn {
+  padding: 8px 30px;
+  border: 0;
+  border-radius: 6px;
+  color: #fff;
+  background: var(--red);
+  font: 700 0.95rem "Times New Roman", serif;
+  cursor: pointer;
+}
+.ghost { background: transparent; border: 1px solid rgba(255, 255, 255, 0.35); }
+.ghost:hover { background: rgba(255, 255, 255, 0.1); }
+
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes packIn { from { transform: translateY(-60vh) rotate(-14deg) scale(0.6); opacity: 0; } }
+@keyframes float { to { transform: translateY(-3%) rotate(0.8deg); } }
+@keyframes glowPulse { 50% { opacity: 0.55; transform: scale(1.08); } }
+@keyframes glowCharge { 0% { opacity: 0.6; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.25); } }
+@keyframes blink { 50% { opacity: 0.45; } }
+@keyframes sweep { 60%, 100% { background-position: -30% 0; } }
+@keyframes shake {
+  0% { transform: translate(0, 0) rotate(0); }
+  10% { transform: translate(-1.5%, 0.5%) rotate(-1.5deg); }
+  20% { transform: translate(1.8%, -0.6%) rotate(1.8deg); }
+  30% { transform: translate(-2.2%, 0.8%) rotate(-2.4deg); }
+  40% { transform: translate(2.6%, -0.8%) rotate(2.8deg); }
+  50% { transform: translate(-3%, 1%) rotate(-3.2deg) scale(1.04); }
+  60% { transform: translate(3.4%, -1%) rotate(3.6deg) scale(1.06); }
+  70% { transform: translate(-3.4%, 1.2%) rotate(-4deg) scale(1.08); }
+  80% { transform: translate(3.6%, -1.2%) rotate(4deg) scale(1.1); }
+  100% { transform: translate(0, 0) rotate(0) scale(1.12); }
+}
+@keyframes tearOff { to { transform: translate(60%, -260%) rotate(38deg); opacity: 0; } }
+@keyframes bodyOpen { to { filter: brightness(2.2) saturate(0.4); } }
+@keyframes packOut { from { transform: scale(1.12); opacity: 1; } to { transform: scale(0.7) translateY(30%); opacity: 0; } }
+@keyframes burst { 0% { opacity: 1; transform: scale(0.2); } 100% { opacity: 0; transform: scale(14); } }
+@keyframes slotIn { from { transform: translateY(-40vh) rotate(calc((var(--i) - 1) * 18deg)) scale(0.4); opacity: 0; } }
+@keyframes tease { from { box-shadow: 0 0 14px var(--tc), 0 10px 22px rgba(0, 0, 0, 0.55); } to { box-shadow: 0 0 40px 6px var(--tc), 0 10px 22px rgba(0, 0, 0, 0.55); } }
+@keyframes auraPulse { to { transform: scale(1.1); opacity: 0.75; } }
+@keyframes pop { from { transform: scale(0.2); opacity: 0; } }
+@keyframes spin { to { rotate: 360deg; } }
+
+@media (max-height: 540px) {
+  .overlay { --ch: min(54dvh, 300px); --cw: min(24vw, calc(var(--ch) * 0.7)); }
+  .heading { font-size: 1.4rem; }
+  .actions { min-height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .overlay, .packWrap, .pack, .glow, .shine, .stageCards, .slotItem, .rays, .back, .aura, .isNew, .hint { animation: none !important; }
+  .tearing .pack, .tearing .top, .tearing .body, .tearing .burst, .tearing .glow { animation: none !important; }
+  .inner { transition: none; }
+}

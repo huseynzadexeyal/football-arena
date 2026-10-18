@@ -1,0 +1,14 @@
+.clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 700 clamp(0.62rem, 1.7vh, 0.82rem) "Courier New", monospace;
+  letter-spacing: 1.5px;
+  color: #c9d3e6;
+  font-variant-numeric: tabular-nums;
+}
+.live { color: #4cffa0; }
+.ball { display: inline-block; font-size: 1.1em; }
+.spin { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }

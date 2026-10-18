@@ -1,0 +1,93 @@
+.team {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 6px clamp(6px, 1.5vw, 16px) clamp(6px, 1.2vh, 12px);
+  color: #fff;
+}
+
+/* başlıq stadion fonunda oxunsun deyə kiçik tünd lövhədə */
+.header {
+  align-self: center;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: clamp(3px, 0.9vh, 9px);
+  padding: 2px 18px;
+  border-radius: 999px;
+  background: rgba(7, 16, 30, 0.78);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+}
+.title { margin: 0; font-size: clamp(1.05rem, 3.4vh, 1.7rem); }
+.winner { color: #4cffa0; }
+.lose { color: #ff6b6b; }
+.total { margin: 0; font-size: clamp(0.95rem, 3vh, 1.35rem); font-weight: 700; color: #ffd24d; }
+
+/* 5 kart həmişə bir sətirdə; hər hüceyrə öz ölçüsünə uyğun ən böyük 7:10 kartı yerləşdirir */
+.grid {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 1500px;
+  align-self: center;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+  gap: clamp(2px, 0.6vw, 10px);
+}
+.cell {
+  animation: deal var(--deal-ms, 650ms) cubic-bezier(0.2, 0.9, 0.25, 1.08) var(--deal-delay, 0ms) both;
+  min-width: 0;
+  min-height: 0;
+  container-type: size;
+  display: grid;
+  place-items: center;
+}
+
+/* kart paylama uçuşunun başlanğıc məsafəsi (ekranın ortasındakı dəstədən) */
+.cell { --dx: calc((2 - var(--i, 0)) * 20vw); }
+.top .cell { --dy: 26vh; }
+.bottom .cell { --dy: -26vh; }
+
+/* Telefon: 3 + 2 düzülüş, son sıra ortada. Səhifə sürüşmür — kartlar sətir hündürlüyünə görə kiçilir */
+@media (max-width: 640px), (max-height: 540px) {
+  .team { padding: 4px 6px 6px; }
+  .grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .cell { grid-column: span 2; }
+  .cell:nth-child(4) { grid-column: 2 / span 2; }
+  .cell:nth-child(5) { grid-column: 4 / span 2; }
+}
+/* portret: komandalar alt-alta */
+@media (max-width: 640px) {
+  .cell { --dx: calc((1 - var(--col, 0)) * 33vw); }
+  .top .cell { --dy: 30vh; }
+  .bottom .cell { --dy: -30vh; }
+}
+/* yan telefon: komandalar sol və sağda, uçuş yatay */
+@media (min-width: 641px) and (max-height: 540px) {
+  .top .cell { --dx: calc(44vw - var(--col, 0) * 11.3vw); --dy: 0px; }
+  .bottom .cell { --dx: calc(-22vw - var(--col, 0) * 11.3vw); --dy: 0px; }
+}
+
+/* kart paylama: dəstədən öz yerinə fırlanaraq uçur */
+@keyframes deal {
+  0% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.25); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* oyun bitəndə Winner / Lose yazısı sıçrayaraq çıxır */
+.reveal { animation: titlePop 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.2) both; }
+@keyframes titlePop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell, .reveal { animation: none; }
+}

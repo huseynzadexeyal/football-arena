@@ -1,0 +1,272 @@
+/* ---------- fon: tutqunlaşan səhnə + yuxarıdan spotlayt ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: radial-gradient(circle at 50% 30%, rgba(8, 14, 36, 0.7), rgba(2, 4, 12, 0.92));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.25s ease both;
+}
+.closing { animation: fadeOut 0.22s ease both; }
+.closing .sheet { animation: sheetOut 0.22s ease both; }
+
+.beam {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: conic-gradient(from 180deg at 50% -12%, transparent 152deg, rgba(255, 255, 255, 0.1) 168deg,
+    rgba(255, 255, 255, 0.24) 180deg, rgba(255, 255, 255, 0.1) 192deg, transparent 208deg);
+  transform-origin: 50% 0;
+  animation: beamIn 0.9s ease 0.05s both, sway 7s ease-in-out 1s infinite alternate;
+}
+
+/* ---------- panel ---------- */
+.sheet {
+  --ch: min(40dvh, 300px); /* kartın hündürlüyü */
+  position: relative;
+  width: min(100%, 420px);
+  max-height: 96dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+  padding: 14px 14px 12px;
+  color: #eaf0ff;
+  background:
+    radial-gradient(120% 60% at 50% 0%, color-mix(in srgb, var(--kit) 38%, transparent), transparent 70%),
+    linear-gradient(160deg, #0f1d44, #070d22);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--kit) 45%, transparent),
+    0 0 60px color-mix(in srgb, var(--kit) 40%, transparent), 0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: sheetIn 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+  scrollbar-width: thin;
+}
+
+.x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.x:hover { background: rgba(255, 90, 90, 0.7); transform: rotate(90deg); }
+
+/* ---------- kart səhnəsi ---------- */
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+  padding: 4px 0 10px;
+  touch-action: pan-y;
+}
+/* dev forma nömrəsi yalnız səhnənin içində kəsilir (panelin sürüşməsinə səbəb olmasın) */
+.bgWrap { position: absolute; inset: 0 -14px; overflow: hidden; pointer-events: none; }
+.bgNumber {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -52%;
+  font: 900 calc(var(--ch) * 1.6) / 1 "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  color: transparent;
+  -webkit-text-stroke: 2px color-mix(in srgb, var(--kit) 55%, #fff 10%);
+  opacity: 0.22;
+  pointer-events: none;
+  animation: numberIn 0.8s cubic-bezier(0.2, 0.9, 0.25, 1) 0.1s both;
+}
+.flip { animation: flipIn 0.85s cubic-bezier(0.2, 0.9, 0.25, 1.12) 0.12s both; transform-style: preserve-3d; }
+.float { animation: bob 4.5s ease-in-out 1.1s infinite alternate; transform-style: preserve-3d; }
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.18s ease-out;
+}
+/* kartın özü cqw ilə ölçüldüyü üçün burada yalnız ölçü verilir */
+.cardBox {
+  width: calc(var(--ch) * 0.7);
+  height: var(--ch);
+  container-type: size;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.55));
+}
+/* parıltı: toxunuş nöqtəsini izləyən işıq + vaxtaşırı keçən zolaq (kartın qalxan formasında) */
+.shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+  mix-blend-mode: soft-light;
+  background:
+    radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, 0.9), transparent 55%),
+    linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.95) 48%, rgba(180, 230, 255, 0.5) 52%, transparent 62%);
+  background-size: 100% 100%, 280% 100%;
+  background-position: 0 0, 130% 0;
+  background-repeat: no-repeat;
+  opacity: calc(0.35 + var(--glow, 0) * 0.65);
+  animation: sweep 4.2s ease-in-out 1.2s infinite;
+}
+.floor {
+  position: absolute;
+  bottom: 0;
+  width: calc(var(--ch) * 0.6);
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.55), transparent);
+  animation: floorPulse 4.5s ease-in-out 1.1s infinite alternate;
+}
+
+/* ---------- məlumat ---------- */
+.info { display: grid; gap: 10px; }
+.head { display: flex; align-items: center; gap: 12px; }
+.title { min-width: 0; }
+.name {
+  margin: 0;
+  font: 800 clamp(1.15rem, 4.6vw, 1.5rem) / 1.1 system-ui, sans-serif;
+  color: #fff;
+  animation: slideUp 0.5s ease 0.35s both;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  color: #dbe6ff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  animation: chipIn 0.4s cubic-bezier(0.2, 0.9, 0.25, 1.4) calc(0.45s + var(--i) * 90ms) both;
+}
+.chipFlag { width: 18px; height: 9px; border-radius: 2px; }
+.FWD { background: rgba(255, 80, 80, 0.25); border-color: rgba(255, 110, 110, 0.6); }
+.MID { background: rgba(76, 255, 160, 0.2); border-color: rgba(76, 255, 160, 0.55); }
+.DEF { background: rgba(74, 163, 255, 0.25); border-color: rgba(74, 163, 255, 0.6); }
+.GK  { background: rgba(255, 210, 77, 0.25); border-color: rgba(255, 210, 77, 0.6); }
+
+/* ümumi reytinq halqası */
+.ring { position: relative; flex: none; width: 58px; height: 58px; display: grid; place-items: center; }
+.ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.ring b { font: 800 1.2rem system-ui, sans-serif; color: #ffd24d; font-variant-numeric: tabular-nums; }
+.ringBg { fill: none; stroke: rgba(255, 255, 255, 0.14); stroke-width: 6; }
+.ringFg {
+  fill: none;
+  stroke: #ffd24d;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: var(--c);
+  stroke-dashoffset: var(--off);
+  filter: drop-shadow(0 0 4px rgba(255, 210, 77, 0.8));
+  animation: ring 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s both;
+}
+
+/* statistika zolaqları */
+.stats { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 7px 14px; }
+.stat { display: grid; gap: 3px; animation: slideUp 0.4s ease var(--delay) both; }
+.statTop { display: flex; justify-content: space-between; font-size: 0.72rem; color: #9fb2d8; }
+.statTop b { color: var(--c); font-variant-numeric: tabular-nums; }
+.track { height: 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--c) 55%, #000), var(--c));
+  box-shadow: 0 0 8px var(--c);
+  transform-origin: left;
+  animation: grow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay) both;
+}
+
+/* bu oyundakı çıxış */
+.match {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  animation: slideUp 0.4s ease 0.95s both;
+}
+.matchLabel { font-size: 0.72rem; color: #9fb2d8; text-transform: uppercase; letter-spacing: 0.08em; }
+.goalRow { display: inline-flex; gap: 3px; font-size: 1.1rem; }
+.goalRow em { font-size: 0.8rem; color: #7e90b6; }
+.goalBall { animation: ballPop 0.55s cubic-bezier(0.2, 0.9, 0.25, 1.5) calc(1.1s + var(--i) * 120ms) both; }
+.mvp {
+  margin-left: auto;
+  padding: 2px 10px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #3a2600;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffd24d, #fff1b0, #ffd24d);
+  background-size: 200% 100%;
+  animation: mvpShine 2s linear 1.2s infinite, chipIn 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.4) 1.1s both;
+}
+
+.closeBtn {
+  justify-self: center;
+  padding: 7px 28px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #e63946, #b3202c);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s, filter 0.15s;
+}
+.closeBtn:hover { transform: translateY(-1px); filter: brightness(1.12); }
+.closeBtn:focus-visible { outline: 2px solid #ffd24d; outline-offset: 2px; }
+
+/* ---------- geniş ekran və yan telefon: kart solda, məlumat sağda ---------- */
+@media (min-width: 640px) and (min-height: 380px), (min-width: 640px) {
+  .sheet { width: min(100%, 760px); grid-template-columns: auto 1fr; align-items: center; gap: 18px; padding: 18px; --ch: min(62dvh, 380px); }
+  .stage { padding: 0 4px 10px; }
+}
+@media (max-height: 460px) {
+  .sheet { --ch: min(66dvh, 250px); padding: 10px 14px; gap: 14px; }
+  .info { gap: 7px; }
+  .stats { gap: 5px 12px; }
+}
+
+/* ---------- animasiyalar ---------- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { to { opacity: 0; } }
+@keyframes sheetIn { from { opacity: 0; transform: translateY(40px) scale(0.88); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes sheetOut { to { opacity: 0; transform: translateY(24px) scale(0.92); } }
+@keyframes beamIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+@keyframes numberIn { from { opacity: 0; transform: translateX(-40px) scale(0.8); } to { opacity: 0.22; transform: none; } }
+@keyframes flipIn {
+  0%   { opacity: 0; transform: rotateY(-110deg) scale(0.55) translateY(30px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes bob { from { transform: translateY(-5px) rotateZ(-0.6deg); } to { transform: translateY(5px) rotateZ(0.6deg); } }
+@keyframes floorPulse { from { transform: scale(1.05); opacity: 0.9; } to { transform: scale(0.85); opacity: 0.6; } }
+@keyframes sweep { 0%, 55% { background-position: 0 0, 130% 0; } 100% { background-position: 0 0, -30% 0; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes chipIn { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: none; } }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ring { from { stroke-dashoffset: var(--c); } to { stroke-dashoffset: var(--off); } }
+@keyframes ballPop { 0% { opacity: 0; transform: translateY(-24px) scale(0.2) rotate(-200deg); } 100% { opacity: 1; transform: none; } }
+@keyframes mvpShine { to { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay, .closing, .sheet, .beam, .bgNumber, .flip, .float, .shine, .floor, .name, .chip, .stat, .fill,
+  .ringFg, .match, .goalBall, .mvp { animation: none !important; }
+  .tilt { transition: none; }
+}

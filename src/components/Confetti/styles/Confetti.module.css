@@ -1,0 +1,23 @@
+.layer { position: fixed; inset: 0; z-index: 46; pointer-events: none; overflow: hidden; }
+.piece {
+  position: absolute;
+  width: 0.55rem;
+  height: 0.9rem;
+  background: var(--c);
+  border-radius: 2px;
+  opacity: 0;
+}
+.burst .piece { left: 50%; top: 46%; animation: burst var(--dur) cubic-bezier(0.2, 0.7, 0.3, 1) var(--delay) both; }
+.rain .piece { left: var(--left); top: -4vh; animation: rain var(--dur) linear var(--delay) both; }
+
+@keyframes burst {
+  0%   { opacity: 1; transform: translate(0, 0) rotate(0); }
+  45%  { opacity: 1; transform: translate(var(--x), var(--y)) rotate(var(--rot)); }
+  100% { opacity: 0; transform: translate(var(--x), calc(var(--y) + 55vh)) rotate(calc(var(--rot) * 2)); }
+}
+@keyframes rain {
+  0%   { opacity: 1; transform: translate(0, 0) rotate(0); }
+  85%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(var(--x) * 0.15), 108vh) rotate(var(--rot)); }
+}
+@media (prefers-reduced-motion: reduce) { .layer { display: none; } }
